@@ -11,7 +11,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 {
 	require_once "connect.php";
 
-	$polaczenie = @new mysqli($host, $db_user, $db_password, 'mydb');
+	$polaczenie = @new mysqli($host, $db_user, $db_password, $db_name );
 	$polaczenie->query("SET CHARSET utf8");
     $polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
 
@@ -22,7 +22,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	else
 	{
 
-		$zapytanie = @$polaczenie->query("SELECT * FROM KLIENCI");
+		$zapytanie = @$polaczenie->query("SELECT * FROM klienci");
 
 echo '<table> <tr>	<th>Lp.</th> <th>Imię</th>  <th>Nazwisko</th>  <th>Nr telefonu</th> <th>Typ</th><th>Obecności</th><th>Wyjeżdżone godziny</th><th>Data urodzenia</th><th>Ulica</th><th>Kod pocztowy</th><th>Nr domu</th><th>Miejscowość</th><th>E-mail</th><th>Płeć</th><th>Status kursu</th></tr>';
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 

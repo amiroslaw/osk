@@ -16,7 +16,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	else
 	{
 
-		$zapytanie = @$polaczenie->query("SELECT * FROM WYKLADOWCY");
+		$zapytanie = @$polaczenie->query("SELECT * FROM wykladowcy");
 
 echo '<table> <tr>	<th>Nr.</th> <th>Imię</th>  <th>Nazwisko</th>  <th>Nr. telefonu</th> </tr>';
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
@@ -55,7 +55,7 @@ header('refresh: 1;');
 
 @$id= $_POST['id']; 
 if(!empty($id)){
-$sqldel = "DELETE FROM WYKLADOWCY  WHERE idWykladowcy='$id'";
+$sqldel = "DELETE FROM wykladowcy  WHERE idWykladowcy='$id'";
 
 if(mysqli_query($polaczenie, $sqldel)){
 
