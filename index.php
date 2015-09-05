@@ -1,8 +1,5 @@
-
 	
 
-</body>
-</html>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -74,7 +71,7 @@ END;
 					<ul>
 		<li><a href="?page=pracownicy">Pracownicy</a></li>
 		<li><a href="?page=wykladowcy">Wykladowcy</a></li>
-		<li><a href="?page=instuktorzy">Instuktorzy</a></li>
+		<li><a href="?page=instruktorzy">Instuktorzy</a></li>
 					</ul>
 				</li>
 				<li><a href="#">O autorach</a></li>
