@@ -55,7 +55,7 @@ if(!empty($imie) && !empty($nazwisko) && !empty($nr_telefonu)&& !empty($typ))
 {
 // dodawanie rekordu do bazy danych 
 
-$sql = "INSERT INTO KLIENCI (imie, nazwisko, nr_telefonu, typ, liczba_obecnosci_wyklady, wyjezdzone_godziny, data_urodzenia, ulica, kod_pocztowy, nr_mieszkania, miejscowosc, email, plec, status_kursu) VALUES ( null, '$imie', '$nazwisko','$nr_telefonu','$typ', '$liczba_obecnosci_wyklady', '$wyjezdzone_godziny', '$data_urodzenia','$ulica','$kod_pocztowy','$nr_mieszkania', '$miejscowosc','$email' '$plec', '$status_kursu')";
+$sql = "INSERT INTO klienci (imie, nazwisko, nr_telefonu, typ, liczba_obecnosci_wyklady, wyjezdzone_godziny, data_urodzenia, ulica, kod_pocztowy, nr_mieszkania, miejscowosc, email, plec, status_kursu) VALUES ( null, '$imie', '$nazwisko','$nr_telefonu','$typ', '$liczba_obecnosci_wyklady', '$wyjezdzone_godziny', '$data_urodzenia','$ulica','$kod_pocztowy','$nr_mieszkania', '$miejscowosc','$email' '$plec', '$status_kursu')";
 
 if(mysqli_query($polaczenie, $sql)){
 
@@ -68,7 +68,7 @@ header('refresh: 1;');
 }}
 //@$id= $_POST['id'];
  function modUser ( $imie, $nazwisko, $adres, $nr_telefonu){
-	$query = "UPDATE KLIENCI SET imie='$imie', nazwisko='$nazwisko','adres='$adres', 'nr_telefonu= '$nr_telefonu' WHERE id=$id";
+	$query = "UPDATE klienci SET imie='$imie', nazwisko='$nazwisko','adres='$adres', 'nr_telefonu= '$nr_telefonu' WHERE id=$id";
 	
 	if (!mysqli_query($query)){
 		return DB_QUERRY_ERROR;
@@ -98,7 +98,22 @@ if (!empty($id))
 		$komunikat="Brak parametrów";
 	}
 }
+// usuwanie rekordu z bazy danych 
+//@$id= $_POST['id']; 
+/*if(!empty($id)){
+$sqldel = "DELETE FROM nowy  WHERE id='$id'";
 
+if(mysql_query($polaczenie, $sqldel)){
+
+    echo "Records were deleted successfully.";
+header('refresh: 1;');
+
+} else{
+
+    echo "ERROR: Could not able to execute $sqldel. " . mysqli_error($polaczenie);
+
+}
+}*/
 	@	$polaczenie->close();
 ?>
 

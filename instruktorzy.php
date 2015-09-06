@@ -1,6 +1,6 @@
 
 <?php 
-
+ob_start();  //przy problemie z nagłówkiem
 if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 {
 	require_once "connect.php";
@@ -15,9 +15,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	}
 	else
 	{
-
 		$zapytanie = @$polaczenie->query("SELECT * FROM instruktorzy");
-
 		echo '<table> <tr>	<th>Nr.</th> <th>Imię</th>  <th>Nazwisko</th><th>Nr. uprawnienia</th>  <th>Nr. telefonu</th> </tr>';
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
 		while ($r = $zapytanie->fetch_array()) {
@@ -25,8 +23,6 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 		} 
 		echo "</table>";
 		$zapytanie->free_result();
-
-
 	}
 }else {
 	echo "dostęp tylko dla upoważnionych, Zaloguj się. ";
@@ -34,41 +30,30 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 // dodanie rekordu 
 @$first_name = mysqli_real_escape_string($polaczenie, $_POST['firstname']); 
 @$last_name = mysqli_real_escape_string($polaczenie, $_POST['lastname']); 
-@$tel_ins = mysqli_real_escape_string($polaczenie, $_POST['tel_ins']);
-@$nr_upr = mysqli_real_escape_string($polaczenie, $_POST['nr_upr']);
+//sprawdzanie poprawności danych
+if (isset($_POST['tel_ins']) && isset($_POST['nr_upr']))  
+{ 
+	$tel_ins = filter_var($_POST['tel_ins'], FILTER_VALIDATE_INT);
+	$nr_upr = filter_var($_POST['nr_upr'], FILTER_VALIDATE_INT);
+	if($tel_ins && $nr_upr){
+		@$tel_ins = mysqli_real_escape_string($polaczenie, $_POST['tel_ins']);
+		@$nr_upr = mysqli_real_escape_string($polaczenie, $_POST['nr_upr']);
+	}else{
+		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
+	}        
+}
 
-
-if(!empty($nr_upr) && !empty($first_name) && !empty($last_name))
+if(!empty($nr_upr) && !empty($first_name) && !empty($last_name)&& !empty($tel_ins))
 {
 	$sql = "INSERT INTO instruktorzy ( imie, nazwisko,numer_uprawnienia, nr_telefonu) VALUES ('$first_name', '$last_name', '$tel_ins', '$nr_upr')";
 
 	if(mysqli_query($polaczenie, $sql)){
-
 		echo "Records added successfully.";
 		header('refresh: 1;');
 	} else{
-
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
-
-	}}
-
-// usuwanie rekordu z bazy danych 
-//
-// @$id= $_POST['id']; 
-// if(!empty($id)){
-// $sqldel = "DELETE FROM wykladowcy  WHERE idWykladowcy='$id'";
-//
-// if(mysqli_query($polaczenie, $sqldel)){
-//
-//     echo "Records were deleted successfully.";
-// header('refresh: 1;');
-//
-// } else{
-//
-//     echo "ERROR: Could not able to execute $sqldel. " . mysqli_error($polaczenie);
-//
-// }
-// }
+	}
+}
 @	$polaczenie->close();
 ?>
 <!-- formularz dodawania rekordu -->
@@ -91,13 +76,3 @@ if(!empty($nr_upr) && !empty($first_name) && !empty($last_name))
 </p> 
 <input type="submit" value="Dodaj instruktora"> 
 </form>
-
-
-<!-- formularz usuwania rekordu -->
-<!-- <form action="<?php $_PHP_SELF ?>" method="post">  -->
-<!--     <p>  -->
-<!--         <label for="id">Usuń rekord o id:</label>  -->
-<!--         <input type="text" name="id" id="id">  -->
-<!--     </p>  -->
-<!--     <input type="submit" value="Usuń wykladowcę">  -->
-<!-- </form> -->

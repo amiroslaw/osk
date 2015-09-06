@@ -1,12 +1,10 @@
-<?php 
-// session_start();
-
+﻿<?php
 if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 {
 	require_once "connect.php";
 
-	$polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
- $polaczenie->query("SET CHARSET utf8");
+	$polaczenie = @new mysqli($host, $db_user, $db_password, 'mydb');
+	$polaczenie->query("SET CHARSET utf8");
     $polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
 
 	if ($polaczenie->connect_errno!=0)
@@ -16,7 +14,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	else
 	{
 
-		$zapytanie = @$polaczenie->query("SELECT * FROM klienci");
+		$zapytanie = @$polaczenie->query("SELECT * FROM KLIENCI");
 
 echo '<table> <tr>	<th>Lp.</th> <th>Imię</th>  <th>Nazwisko</th>  <th>Nr telefonu</th> <th>Typ</th><th>Obecności</th><th>Wyjeżdżone godziny</th><th>Data urodzenia</th><th>Ulica</th><th>Kod pocztowy</th><th>Nr domu</th><th>Miejscowość</th><th>E-mail</th><th>Płeć</th><th>Status kursu</th></tr>';
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
@@ -25,15 +23,9 @@ echo "<tr><td>$r[0]</td> <td>$r[1]</td> <td>$r[2]</td> <td>$r[3]</td> <td>$r[4]<
 		} 
 echo "</table>";
 		$zapytanie->free_result();
-		$polaczenie->close();
-
-
 	}
 }else {
 	echo "dostęp tylko dla upoważnionych, Zaloguj się. ";
 }
-?>
-<form action="?page=dodajPlatnosc" method="post">
-<input type="submit" value="edytuj">
 
-</form>
+?>

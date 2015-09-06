@@ -82,35 +82,44 @@ echo $_SESSION['blad'];}
 <?php
 include('connect.php');
 $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
- $polaczenie->query("SET CHARSET utf8");
-    $polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
+$polaczenie->query("SET CHARSET utf8");
+$polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
 if (!$polaczenie) {
-    die("Connection failed: " . mysqli_connect_error());
+	die("Connection failed: " . mysqli_connect_error());
 }
 if(isset($_GET['id']))
 {
-echo "jfidsfo";
 	$id=$_GET['id'];
 	if(isset($_POST['submit']))
 	{
-echo "post submit";
-		
 		$first_name=$_POST['firstname'];
 		$last_name=$_POST['lastname'];
-		$nr_upr=$_POST['nr_upr'];
-		$nr_tel=$_POST['tel_ins'];
-		if(empty($first_name) || empty($last_name) || empty($nr_tel) || empty($nr_upr)){
-			echo "pusty formularz";
+		//sprawdzanie poprawności danych
+		if (isset($_POST['tel_ins']) && isset($_POST['nr_upr']))  
+		{ 
+			$tel_ins = filter_var($_POST['tel_ins'], FILTER_VALIDATE_INT);
+			$nr_upr = filter_var($_POST['nr_upr'], FILTER_VALIDATE_INT);
+			if($tel_ins && $nr_upr){
+				@$tel_ins = mysqli_real_escape_string($polaczenie, $_POST['tel_ins']);
+				@$nr_upr = mysqli_real_escape_string($polaczenie, $_POST['nr_upr']);
+			}else{
+				echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
+			}        
 		}
-		$query3="update instruktorzy set imie='$first_name', nazwisko='$last_name', numer_uprawnienia='$nr_upr', nr_telefonu='$nr_tel' where idINSTRUKTORZY='$id'";
-		if(mysqli_query($polaczenie,$query3))
-		{ echo "update";
-			header('Location:index.php?page=instruktorzy');
-			mysqli_close($polaczenie);
-			// header('Location: ' . $_SERVER['HTTP_REFERER']);
-		}else {
-			echo "coś poszło nie tak"; 
-			 echo "Error updating record: " . mysqli_error($polaczenie);
+		if(empty($nr_upr) || empty($first_name) || empty($last_name)|| empty($tel_ins))
+		{
+			echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
+		} else{
+			$query3="update instruktorzy set imie='$first_name', nazwisko='$last_name', numer_uprawnienia='$nr_upr', nr_telefonu='$tel_ins' where idINSTRUKTORZY='$id'";
+			if(mysqli_query($polaczenie,$query3))
+			{ echo "update";
+				header('Location:index.php?page=instruktorzy');
+				mysqli_close($polaczenie);
+				// header('Location: ' . $_SERVER['HTTP_REFERER']);
+			}else {
+				echo "coś poszło nie tak"; 
+				echo "Error updating record: " . mysqli_error($polaczenie);
+			}
 		}
 	}
 	$q="select * from instruktorzy where idINSTRUKTORZY='$id'";
