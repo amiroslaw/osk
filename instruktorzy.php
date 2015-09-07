@@ -54,6 +54,7 @@ if(!empty($nr_upr) && !empty($first_name) && !empty($last_name)&& !empty($tel_in
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
 	}
 }
+
 @	$polaczenie->close();
 ?>
 <!-- formularz dodawania rekordu -->

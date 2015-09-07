@@ -18,13 +18,16 @@ $query1="delete from $nazwaTabeli where idINSTRUKTORZY='$id'";
 case 'wykladowcy':
 $query1="delete from $nazwaTabeli where idWykladowcy='$id'";
 	break;
+case 'dodajPojazd':
+$query1="delete from srodki_transportu where idPojazdy='$id'";
+	break;
 default:
 	echo "wystąpił jakiś błąd"; 
 	break;
 }
 if(mysqli_query($polaczenie,$query1))
 {
-// header('Location: index.php?page=instruktorzy');
+// header('Location: index.php?page=dodajPojazd');
 
 mysqli_close($polaczenie);
 // powrot do poprzedniej strony

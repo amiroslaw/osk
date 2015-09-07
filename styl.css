@@ -1,3 +1,6 @@
+/* dymek po najechaniu na label */
+label + span {display:none;}
+label:hover + span,label:focus + span {display:block;position:absolute;bottom:200;right:220;width:200px;background:#000;color:#fff;}
 /* formularze  */
 form {
 	max-width: 600px;
