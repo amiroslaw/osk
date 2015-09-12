@@ -15,35 +15,13 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	}
 	else
 	{
-		$zapytanie = @$polaczenie->query("SELECT * FROM srodki_transportu");
-		echo '<table> <tr>	
-<th>Nr.</th>
-<th>Marka</th> 
-<th>Model</th>
-<th>Rodzaj</th>  
-<th>Nr. rejestracyjny</th> 
-<th>Nr. ubezpieczenie</th> 
-<th>Data ubezpieczenia</th> 
-<th>Kategoria</th> 
-</tr>';
-// nie wiem czy dodać kategorie do jakiej jest pojazd objęty z innej bazy
-// czy to przypadkiem nie to samo co rodzaj?
-		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
-		while ($r = $zapytanie->fetch_array()) {
-			echo "<tr> <td>$r[0]</td> <td>$r[1]</td> <td>$r[2]</td> <td>$r[3]</td>  <td>$r[6]</td>   <td>$r[7]</td> <td>$r[8]</td> <td>$r[10]</td>    <td><a href='delete.php?id=$r[0]'>x</a></td> </tr> ";
-		} 
-		echo "</table>";
-		$zapytanie->free_result();
-	}
-}else {
-	echo "dostęp tylko dla upoważnionych, Zaloguj się. ";
-}
 // dodanie rekordu 
 @$marka = mysqli_real_escape_string($polaczenie, $_POST['marka']); 
 @$model = mysqli_real_escape_string($polaczenie, $_POST['model']); 
 @$rejestr = mysqli_real_escape_string($polaczenie, $_POST['rejestr']); 
 @$ubezp = mysqli_real_escape_string($polaczenie, $_POST['ubezp']); 
 @$data_ubezp = mysqli_real_escape_string($polaczenie, $_POST['data_ubezp']); 
+@$data_przegladu = mysqli_real_escape_string($polaczenie, $_POST['data_przegladu']); 
 //sprawdzanie poprawności danych
 if (isset($_POST['rodzaj']) )  
 { 
@@ -56,10 +34,9 @@ if (isset($_POST['rodzaj']) )
 		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
 	}        
 }
-
-if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !empty($ubezp) && !empty($data_ubezp) && !empty($kategoria))
+if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !empty($data_przegladu) && !empty($ubezp) && !empty($data_ubezp) && !empty($kategoria))
 {
-	$sql = "INSERT INTO srodki_transportu ( marka, model,rodzaj, nr_rejestracyjny, nr_ubezpieczenia, data_ubezpieczenia, KATEGORIE_idKategorie) VALUES ('$marka', '$model', '$rodzaj', '$rejestr', '$ubezp', '$data_ubezp', '$kategoria')";
+	$sql = "INSERT INTO srodki_transportu ( marka, model,rodzaj, nr_rejestracyjny, nr_ubezpieczenia, data_ubezpieczenia, KATEGORIE_idKategorie, data_przegladu, stan_techniczny, dostępnosc) VALUES ('$marka', '$model', '$rodzaj', '$rejestr', '$ubezp', '$data_ubezp', '$kategoria','$data_przegladu', '1','1')";
 
 	if(mysqli_query($polaczenie, $sql)){
 		echo "Records added successfully.";
@@ -67,6 +44,10 @@ if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !em
 	} else{
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
 	}
+}
+	}
+}else {
+	echo "dostęp tylko dla upoważnionych, Zaloguj się. ";
 }
 
 @	$polaczenie->close();
@@ -96,6 +77,10 @@ if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !em
 <p> 
 <label for="data_ubezp">Data ubezpieczenia:</label> 
 <input type="text" name="data_ubezp" id="data_ubezp"> 
+</p> 
+<p> 
+<label for="data_przegladu">Data przeglądu:</label> 
+<input type="text" name="data_przegladu" id="data_przegladu"> 
 </p> 
 <p> 
 <label for="kategoria">Kategoria:</label> 

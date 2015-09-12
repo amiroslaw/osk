@@ -92,26 +92,32 @@ if(isset($_GET['id']))
 	$id=$_GET['id'];
 	if(isset($_POST['submit']))
 	{
-		$first_name=$_POST['firstname'];
-		$last_name=$_POST['lastname'];
-		//sprawdzanie poprawności danych
-		if (isset($_POST['tel']) )  
-		{ 
-			$tel = filter_var($_POST['tel'], FILTER_VALIDATE_INT);
-			if($tel){
-				@$tel = mysqli_real_escape_string($polaczenie, $_POST['tel']);
-			}else{
-				echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
-			}        
-		}
-		if(empty($first_name) || empty($last_name)|| empty($tel))
+// edycja rekordu 
+@$data_ubezp = mysqli_real_escape_string($polaczenie, $_POST['data_ubezp']); 
+@$przeg = mysqli_real_escape_string($polaczenie, $_POST['przeg']); 
+@$dostepnosc = mysqli_real_escape_string($polaczenie, $_POST['dostepnosc']); 
+//sprawdzanie poprawności danych
+if (isset($_POST['tech']) )  
+{ 
+$tech = filter_var($_POST['tech'], FILTER_VALIDATE_INT);
+
+
+	if($tech){
+		@$tech = mysqli_real_escape_string($polaczenie, $_POST['tech']);
+	}else{
+		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
+	}        
+}
+
+
+		if(empty($przeg) || empty($data_ubezp)|| empty($tech))
 		{
 			echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 		} else{
-			$query3="update wykladowcy set imie='$first_name', nazwisko='$last_name', nr_telefonu='$tel' where idWykladowcy='$id'";
+			$query3="update srodki_transportu set data_przegladu='$przeg', stan_techniczny='$tech', data_ubezpieczenia='$data_ubezp', dostępnosc='$dostepnosc' where idPojazdy='$id'";
 			if(mysqli_query($polaczenie,$query3))
 			{ echo "update";
-				header('Location:index.php?page=wykladowcy');
+				header('Location:index.php?page=stanTechniczny');
 				mysqli_close($polaczenie);
 				// header('Location: ' . $_SERVER['HTTP_REFERER']);
 			}else {
@@ -120,29 +126,34 @@ if(isset($_GET['id']))
 			}
 		}
 	}
-	$q="select * from wykladowcy where idWykladowcy='$id'";
+	$q="select * from srodki_transportu where idPojazdy='$id'";
 	$zapytanie=mysqli_query($polaczenie, $q) or die(mysqli_error());
 	$query2= mysqli_fetch_array($zapytanie);
-	?>
-		<!-- formularz dodawania rekordu -->
-		<form action="<?php $_PHP_SELF ?>" method="post"> 
-		<p> 
-		<label for="firstName">Imię:</label> 
-		<input type="text" name="firstname" id="firstName" 
-		value="<?php echo $query2['1']; ?>" />
-		</p> 
-		<p> 
-		<label for="lastName">Nazwisko:</label> 
-		<input type="text" name="lastname" id="lastName"
-		value="<?php echo $query2['2']; ?>" />
-		</p> 
-		<p> 
-		<label for="nr_telefonu">Numer telefonu:</label> 
-		<input type="text" name="tel" id="nr_telefonu"
-		value="<?php echo $query2['3']; ?>" />
-		</p> 
-		<input type="submit" name="submit" value="Edytuj wykladowce"> 
-		</form>
+?>
+<!-- formularz dodawania rekordu -->
+<form action="<?php $_PHP_SELF ?>" method="post"> 
+<p> 
+<label for="data_ubezp">Data ubezpieczenia:</label> 
+<input type="text" name="data_ubezp" id="data_ubezp"
+		value="<?php echo $query2['8']; ?>" />
+</p> 
+<p> 
+<label for="przeg">Data przeglądu:</label> 
+<input type="text" name="przeg" id="przeg" 
+		value="<?php echo $query2['4']; ?>" />
+</p> 
+<p> 
+<label for="tech">Stan techniczny:</label> 
+<input type="text" name="tech" id="tech" 
+		value="<?php echo $query2['5']; ?>" />
+</p> 
+<p> 
+<label for="dostepnosc">Dostępność pojazdu:</label> <span>Czy pojazd jest dostępny: 0→ nie; 1→ tak</span> 
+<input type="text" name="dostepnosc" id="dostepnosc" 
+		value="<?php echo $query2['9']; ?>" />
+</p> 
+<input type="submit" name="submit" value="Edytuj dane"> 
+</form>
 		<?php
 }
 ?>

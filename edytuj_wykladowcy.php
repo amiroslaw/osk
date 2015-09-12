@@ -98,12 +98,14 @@ if(isset($_GET['id']))
 		if (isset($_POST['tel']) )  
 		{ 
 			$tel = filter_var($_POST['tel'], FILTER_VALIDATE_INT);
+
 			if($tel){
 				@$tel = mysqli_real_escape_string($polaczenie, $_POST['tel']);
 			}else{
 				echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
 			}        
 		}
+
 		if(empty($first_name) || empty($last_name)|| empty($tel))
 		{
 			echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
@@ -143,6 +145,7 @@ if(isset($_GET['id']))
 		</p> 
 		<input type="submit" name="submit" value="Edytuj wykladowce"> 
 		</form>
+
 		<?php
 }
 ?>
