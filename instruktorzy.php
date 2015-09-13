@@ -53,6 +53,8 @@ if(!empty($nr_upr) && !empty($first_name) && !empty($last_name)&& !empty($tel_in
 	} else{
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
 	}
+}else{
+// echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 }
 
 @	$polaczenie->close();

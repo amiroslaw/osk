@@ -45,6 +45,7 @@ if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !em
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
 	}
 }
+
 	}
 }else {
 	echo "dostęp tylko dla upoważnionych, Zaloguj się. ";

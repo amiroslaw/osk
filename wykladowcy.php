@@ -59,6 +59,9 @@ header('refresh: 1;');
 
 }
 }
+else{
+// echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
+}
 
 	@	$polaczenie->close();
 ?>

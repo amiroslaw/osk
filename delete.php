@@ -21,6 +21,9 @@ $query1="delete from $nazwaTabeli where idWykladowcy='$id'";
 case 'pojazdy':
 $query1="delete from srodki_transportu where idPojazdy='$id'";
 	break;
+case 'jazdy':
+$query1="delete from $nazwaTabeli where idJAZDY='$id'";
+	break;
 default:
 	echo "wystąpił jakiś błąd"; 
 	break;
