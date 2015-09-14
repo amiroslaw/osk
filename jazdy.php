@@ -72,30 +72,44 @@ if(!empty($rozpoczecie) && !empty($zakonczenie) && !empty($instruktor)&& !empty(
 echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 }
 
+$zap = @$polaczenie->query("SELECT * FROM instruktorzy ");
+while ($array[]=$zap->fetch_object()) ;
 
-@	$polaczenie->close();
+	$polaczenie->close();
 ?>
 <!-- formularz dodawania rekordu -->
 <form action="<?php $_PHP_SELF ?>" method="post"> 
 <p> 
 <label for="rozpoczecie">Data rozpoczęcia:</label>  <span>Data rozpoczęcia jazd </span> 
-<input type="text" name="rozpoczecie" id="rozpoczecie"> 
+<input type="datetime-local" name="rozpoczecie" id="rozpoczecie" required> 
 </p> 
 <p> 
 <label for="zakonczenie">Data zakończenia:</label> 
-<input type="text" name="zakonczenie" id="zakonczenie"> 
+<input type="datetime-local" name="zakonczenie" id="zakonczenie" required> 
 </p> 
 <p> 
 <label for="instruktor">Instruktor:</label> 
-<input type="text" name="instruktor" id="instruktor"> 
+<select name="instruktor" id="instruktor" required>
+<?php
+foreach ($array as $option) {
+?>
+      <option value="<?php echo $option->idINSTRUKTORZY; ?>"> <?php echo $option->imie ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
+<!-- <p>  -->
+<!-- <label for="instruktor">Instruktor:</label>  -->
+<!-- <input type="text" name="instruktor" id="instruktor"required>  -->
+<!-- </p>  -->
 <p> 
 <label for="klient">Klient:</label> 
-<input type="text" name="klient" id="klient"> 
+<input type="text" name="klient" id="klient"required> 
 </p> 
 <p> 
 <label for="pojazd">Pojazd:</label> 
-<input type="text" name="pojazd" id="pojazd"> 
+<input type="text" name="pojazd" id="pojazd"required> 
 </p> 
 <!-- <p>  -->
 <!-- <label for="rodzaj">Rodzaj:</label> <span>Do jakiej kategorii prawa jazdy pojazd jest przeznaczony</span>  -->
