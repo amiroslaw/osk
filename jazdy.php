@@ -76,6 +76,7 @@ $zap = @$polaczenie->query("SELECT * FROM instruktorzy ");
 while ($array[]=$zap->fetch_object()) ;
 
 	$polaczenie->close();
+// nie wiem czy zakonczenie polaczenia nie powinno byc jakos na koncu
 ?>
 <!-- formularz dodawania rekordu -->
 <form action="<?php $_PHP_SELF ?>" method="post"> 
