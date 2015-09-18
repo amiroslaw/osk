@@ -15,7 +15,14 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	}
 	else
 	{
-		$zapytanie = @$polaczenie->query("SELECT * FROM jazdy ORDER BY termin_rozpoczecia");
+		// $zapytanie = @$polaczenie->query("SELECT * FROM jazdy ORDER BY termin_rozpoczecia");
+		$zapytanie = @$polaczenie->query("SELECT jazdy.idJAZDY, jazdy.termin_rozpoczecia, jazdy.termin_zakonczenia, instruktorzy.imie, instruktorzy.nazwisko, klienci.imie,klienci.nazwisko, srodki_transportu.nr_rejestracyjny
+FROM jazdy, instruktorzy, klienci, srodki_transportu
+WHERE instruktorzy.idINSTRUKTORZY=jazdy.idINSTRUKTORZY AND jazdy.KLIENCI_idKLIENT=klienci.idKLIENT AND jazdy.idPojazdy=srodki_transportu.idPojazdy
+ORDER BY termin_rozpoczecia");
+$zapListaInstruktorow = @$polaczenie->query("SELECT * FROM instruktorzy");
+$zapListaKlientow = @$polaczenie->query("SELECT * FROM klienci");
+$zapListaPojazdow = @$polaczenie->query("SELECT * FROM srodki_transportu");
 		echo '<table> <tr>	
 <th>Data rozpoczęcia</th> 
 <th>Data zakończenia</th> 
@@ -26,7 +33,8 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 // czy to przypadkiem nie to samo co rodzaj?
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
 		while ($r = $zapytanie->fetch_array()) {
-			echo "<tr> <td>$r[4]</td> <td>$r[5]</td> <td>$r[2]</td> <td>$r[3]</td>  <td>$r[1]</td>  <td><a href='edytuj_jazdy.php?id=$r[0]'>Edytuj</a></td>   <td><a href='delete.php?id=$r[0]'>x</a></td> </tr> ";
+			// echo "<tr> <td>$r[4]</td> <td>$r[5]</td> <td>$r[2]</td> <td>$r[3]</td>  <td>$r[1]</td>  <td><a href='edytuj_jazdy.php?id=$r[0]'>Edytuj</a></td>   <td><a href='delete.php?id=$r[0]'>x</a></td> </tr> ";
+			echo "<tr> <td>$r[1]</td> <td>$r[2]</td>  <td>$r[3] $r[4] </td> <td>$r[5] $r[6]</td>  <td>$r[7]</td>  <td><a href='edytuj_jazdy.php?id=$r[0]'>Edytuj</a></td>   <td><a href='delete.php?id=$r[0]'>x</a></td> </tr> ";
 		} 
 		echo "</table>";
 		$zapytanie->free_result();
@@ -72,8 +80,6 @@ if(!empty($rozpoczecie) && !empty($zakonczenie) && !empty($instruktor)&& !empty(
 echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 }
 
-$zap = @$polaczenie->query("SELECT * FROM instruktorzy ");
-while ($array[]=$zap->fetch_object()) ;
 
 	$polaczenie->close();
 // nie wiem czy zakonczenie polaczenia nie powinno byc jakos na koncu
@@ -92,9 +98,9 @@ while ($array[]=$zap->fetch_object()) ;
 <label for="instruktor">Instruktor:</label> 
 <select name="instruktor" id="instruktor" required>
 <?php
-foreach ($array as $option) {
+while ($wiersz=$zapListaInstruktorow->fetch_array()) {
 ?>
-      <option value="<?php echo $option->idINSTRUKTORZY; ?>"> <?php echo $option->imie ?> </option>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[1]; ?> <?php echo $wiersz[2]; ?> </option>
 <?php
 }
 ?>
@@ -106,12 +112,36 @@ foreach ($array as $option) {
 <!-- </p>  -->
 <p> 
 <label for="klient">Klient:</label> 
-<input type="text" name="klient" id="klient"required> 
+<select name="klient" id="klient" required>
+<?php
+while ($wiersz=$zapListaKlientow->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[1]; ?> <?php echo $wiersz[2]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
+<!-- <p>  -->
+<!-- <label for="klient">Klient:</label>  -->
+<!-- <input type="text" name="klient" id="klient"required>  -->
+<!-- </p>  -->
 <p> 
 <label for="pojazd">Pojazd:</label> 
-<input type="text" name="pojazd" id="pojazd"required> 
+<select name="pojazd" id="pojazd" required>
+<?php
+while ($wiersz=$zapListaPojazdow->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[6]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
+<!-- <p>  -->
+<!-- <label for="pojazd">Pojazd:</label>  -->
+<!-- <input type="text" name="pojazd" id="pojazd"required>  -->
+<!-- </p>  -->
 <!-- <p>  -->
 <!-- <label for="rodzaj">Rodzaj:</label> <span>Do jakiej kategorii prawa jazdy pojazd jest przeznaczony</span>  -->
 <!-- <input type="text" name="rodzaj" id="rodzaj">  -->
