@@ -64,7 +64,7 @@ END;
 					<ul>
 						<li><a href="?page=dodajGrupe">Dodaj grupę</a></li>
 						<li><a href="?page=obecnosci">Lista obecności</a></li>
-						<li><a href="?page=edycjaGrupy">Edycja grupy</a></li>
+						<!-- <li><a href="?page=edycjaGrupy">Edycja grupy</a></li> -->
 					</ul>
 				</li>
 		<li><a href="#">Kadra</a>

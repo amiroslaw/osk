@@ -87,25 +87,29 @@ $polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
 if (!$polaczenie) {
 	die("Connection failed: " . mysqli_connect_error());
 }
+
+// zapytania do lis rozwijanych w formularzu
+$zapListaKategoria = @$polaczenie->query("SELECT * FROM kategorie");
+$zapListaWykladowca = @$polaczenie->query("SELECT * FROM wykladowcy");
 if(isset($_GET['id']))
 {
 	$id=$_GET['id'];
 	if(isset($_POST['submit']))
 	{
 // edycja rekordu 
-@$data_ubezp = mysqli_real_escape_string($polaczenie, $_POST['data_ubezp']); 
-@$przeg = mysqli_real_escape_string($polaczenie, $_POST['przeg']); 
-@$dostepnosc = mysqli_real_escape_string($polaczenie, $_POST['dostepnosc']); 
-@$tech = mysqli_real_escape_string($polaczenie, $_POST['tech']);
+@$nazwa = mysqli_real_escape_string($polaczenie, $_POST['nazwa']); 
+@$wykladowca = mysqli_real_escape_string($polaczenie, $_POST['wykladowca']); 
+@$kategoria = mysqli_real_escape_string($polaczenie, $_POST['kategoria']);
 
-		if(empty($przeg) || empty($data_ubezp)|| empty($tech))
+		if(empty($nazwa) || empty($wykladowca)|| empty($kategoria))
 		{
 			echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 		} else{
-			$query3="update srodki_transportu set data_przegladu='$przeg', stan_techniczny='$tech', data_ubezpieczenia='$data_ubezp', dostępnosc='$dostepnosc' where idPojazdy='$id'";
+			$query3="UPDATE Grupy SET nazwa='$nazwa', idKategorie='$kategoria', idWykladowcy='$wykladowca'
+				 WHERE idGrupa='$id'";
 			if(mysqli_query($polaczenie,$query3))
 			{ echo "update";
-				header('Location:index.php?page=stanTechniczny');
+				header('Location:index.php?page=grupy');
 				mysqli_close($polaczenie);
 				// header('Location: ' . $_SERVER['HTTP_REFERER']);
 			}else {
@@ -114,42 +118,42 @@ if(isset($_GET['id']))
 			}
 		}
 	}
-	$q="select * from srodki_transportu where idPojazdy='$id'";
+	$q="select * from Grupy where idGrupa='$id'";
 	$zapytanie=mysqli_query($polaczenie, $q) or die(mysqli_error());
 	$query2= mysqli_fetch_array($zapytanie);
 ?>
 <!-- formularz edytowania rekordu -->
 <form action="<?php $_PHP_SELF ?>" method="post"> 
 <p> 
-<label for="data_ubezp">Data ubezpieczenia:</label> 
-<input type="text" name="data_ubezp" id="data_ubezp"
-		value="<?php echo $query2['8']; ?>" />
+<label for="nazwa">Data rozpoczęcia:</label> 
+<input type="text" name="nazwa" id="nazwa" 
+		value="<?php echo $query2['1']; ?>" required />
 </p> 
 <p> 
-<label for="przeg">Data przeglądu:</label> 
-<input type="text" name="przeg" id="przeg" 
-		value="<?php echo $query2['4']; ?>" />
+<label for="kategoria">Kategoria:</label> 
+<select name="kategoria" id="kategoria" required>
+<?php
+while ($wiersz=$zapListaKategoria->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[3]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
 <p> 
-<label for="tech">Stan techniczny:</label> 
- <select name="tech" id="tech">
-    <option value="-1">Zepsuty</option>
-    <option value="1">Sprawny</option>
-  </select>
+<label for="wykladowca">Wykladowca:</label> 
+<select name="wykladowca" id="wykladowca" required>
+<?php
+while ($wiersz=$zapListaWykladowca->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[1]." ". $wiersz[2]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
-<!-- <input type="number" name="tech" id="tech"  -->
-<!-- 		value="<?php echo $query2['5']; ?>" /> -->
-<!-- </p>  -->
-<p> 
-<label for="dostepnosc">Dostępność pojazdu:</label> <span>Czy pojazd jest dostępny: 0→ nie; 1→ tak</span> 
- <select name="dostepnosc" id="dostepnosc">
-    <option value="-1">Niedostępny</option>
-    <option value="1">Dostępny</option>
-  </select>
-</p> 
-<!-- <input type="number" name="dostepnosc" id="dostepnosc"  -->
-<!-- 		value="<?php echo $query2['9']; ?>" /> -->
-<!-- </p>  -->
+
 <input type="submit" name="submit" value="Edytuj dane"> 
 </form>
 		<?php
