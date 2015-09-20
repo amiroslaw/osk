@@ -87,6 +87,11 @@ $polaczenie->query ("SET NAMES `utf8` COLLATE `utf8_polish_ci`");
 if (!$polaczenie) {
 	die("Connection failed: " . mysqli_connect_error());
 }
+
+// zapytania do lis rozwijanych w formularzu
+$zapListaInstruktorow = @$polaczenie->query("SELECT * FROM instruktorzy");
+$zapListaKlientow = @$polaczenie->query("SELECT * FROM klienci");
+$zapListaPojazdow = @$polaczenie->query("SELECT * FROM srodki_transportu");
 if(isset($_GET['id']))
 {
 	$id=$_GET['id'];
@@ -98,19 +103,6 @@ if(isset($_GET['id']))
 @$instruktor = mysqli_real_escape_string($polaczenie, $_POST['instruktor']); 
 @$klient = mysqli_real_escape_string($polaczenie, $_POST['klient']); 
 @$pojazd = mysqli_real_escape_string($polaczenie, $_POST['pojazd']); 
-//sprawdzanie poprawności danych
-// if (isset($_POST['tech']) )  
-// { 
-// $tech = filter_var($_POST['tech'], FILTER_VALIDATE_INT);
-//
-//
-// 	if($tech){
-// 		@$tech = mysqli_real_escape_string($polaczenie, $_POST['tech']);
-// 	}else{
-// 		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
-// 	}        
-// }
-
 
 		if(empty($rozpoczecie) || empty($zakonczenie)|| empty($instruktor)|| empty($klient) || empty($pojazd))
 		{
@@ -137,32 +129,51 @@ if(isset($_GET['id']))
 <p> 
 <label for="rozpoczecie">Data rozpoczęcia:</label>  <span>Data rozpoczęcia jazd </span> 
 <input type="text" name="rozpoczecie" id="rozpoczecie" 
-		value="<?php echo $query2['4']; ?>" />
+		value="<?php echo $query2['4']; ?>" required />
 </p> 
 <p> 
 <label for="zakonczenie">Data zakończenia:</label> 
 <input type="text" name="zakonczenie" id="zakonczenie" 
-		value="<?php echo $query2['5']; ?>" />
+		value="<?php echo $query2['5']; ?>" required />
 </p> 
+
 <p> 
 <label for="instruktor">Instruktor:</label> 
-<input type="text" name="instruktor" id="instruktor" 
-		value="<?php echo $query2['2']; ?>" />
+<select name="instruktor" id="instruktor" required>
+<?php
+while ($wiersz=$zapListaInstruktorow->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[1]; ?> <?php echo $wiersz[2]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
 <p> 
 <label for="klient">Klient:</label> 
-<input type="text" name="klient" id="klient" 
-		value="<?php echo $query2['3']; ?>" />
+<select name="klient" id="klient" required>
+<?php
+while ($wiersz=$zapListaKlientow->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[1]; ?> <?php echo $wiersz[2]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
 <p> 
 <label for="pojazd">Pojazd:</label> 
-<input type="text" name="pojazd" id="pojazd"
-		value="<?php echo $query2['1']; ?>" />
+<select name="pojazd" id="pojazd" required>
+<?php
+while ($wiersz=$zapListaPojazdow->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[6]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
-<!-- <p>  -->
-<!-- <label for="rodzaj">Rodzaj:</label> <span>Do jakiej kategorii prawa jazdy pojazd jest przeznaczony</span>  -->
-<!-- <input type="text" name="rodzaj" id="rodzaj">  -->
-<!-- </p>  -->
+
 <input type="submit" name="submit" value="Edytuj dane"> 
 </form>
 		<?php

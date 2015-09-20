@@ -96,19 +96,7 @@ if(isset($_GET['id']))
 @$data_ubezp = mysqli_real_escape_string($polaczenie, $_POST['data_ubezp']); 
 @$przeg = mysqli_real_escape_string($polaczenie, $_POST['przeg']); 
 @$dostepnosc = mysqli_real_escape_string($polaczenie, $_POST['dostepnosc']); 
-//sprawdzanie poprawności danych
-if (isset($_POST['tech']) )  
-{ 
-$tech = filter_var($_POST['tech'], FILTER_VALIDATE_INT);
-
-
-	if($tech){
-		@$tech = mysqli_real_escape_string($polaczenie, $_POST['tech']);
-	}else{
-		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
-	}        
-}
-
+@$tech = mysqli_real_escape_string($polaczenie, $_POST['tech']);
 
 		if(empty($przeg) || empty($data_ubezp)|| empty($tech))
 		{
@@ -144,14 +132,24 @@ $tech = filter_var($_POST['tech'], FILTER_VALIDATE_INT);
 </p> 
 <p> 
 <label for="tech">Stan techniczny:</label> 
-<input type="text" name="tech" id="tech" 
-		value="<?php echo $query2['5']; ?>" />
+ <select name="tech" id="tech">
+    <option value="-1">Zepsuty</option>
+    <option value="1">Sprawny</option>
+  </select>
 </p> 
+<!-- <input type="number" name="tech" id="tech"  -->
+<!-- 		value="<?php echo $query2['5']; ?>" /> -->
+<!-- </p>  -->
 <p> 
 <label for="dostepnosc">Dostępność pojazdu:</label> <span>Czy pojazd jest dostępny: 0→ nie; 1→ tak</span> 
-<input type="text" name="dostepnosc" id="dostepnosc" 
-		value="<?php echo $query2['9']; ?>" />
+ <select name="dostepnosc" id="dostepnosc">
+    <option value="-1">Niedostępny</option>
+    <option value="1">Dostępny</option>
+  </select>
 </p> 
+<!-- <input type="number" name="dostepnosc" id="dostepnosc"  -->
+<!-- 		value="<?php echo $query2['9']; ?>" /> -->
+<!-- </p>  -->
 <input type="submit" name="submit" value="Edytuj dane"> 
 </form>
 		<?php

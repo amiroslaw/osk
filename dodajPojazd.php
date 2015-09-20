@@ -15,6 +15,8 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	}
 	else
 	{
+// zapytania do lis rozwijanych w formularzu
+$zapListaKategoria = @$polaczenie->query("SELECT * FROM kategorie");
 // dodanie rekordu 
 @$marka = mysqli_real_escape_string($polaczenie, $_POST['marka']); 
 @$model = mysqli_real_escape_string($polaczenie, $_POST['model']); 
@@ -22,21 +24,10 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 @$ubezp = mysqli_real_escape_string($polaczenie, $_POST['ubezp']); 
 @$data_ubezp = mysqli_real_escape_string($polaczenie, $_POST['data_ubezp']); 
 @$data_przegladu = mysqli_real_escape_string($polaczenie, $_POST['data_przegladu']); 
-//sprawdzanie poprawności danych
-if (isset($_POST['rodzaj']) )  
-{ 
-	$rodzaj = filter_var($_POST['rodzaj'], FILTER_VALIDATE_INT);
-	$kategoria = filter_var($_POST['kategoria'], FILTER_VALIDATE_INT);
-	if($rodzaj && $kategoria){
-		@$rodzaj = mysqli_real_escape_string($polaczenie, $_POST['rodzaj']);
-		@$kategoria = mysqli_real_escape_string($polaczenie, $_POST['kategoria']);
-	}else{
-		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
-	}        
-}
-if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !empty($data_przegladu) && !empty($ubezp) && !empty($data_ubezp) && !empty($kategoria))
+@$kategoria = mysqli_real_escape_string($polaczenie, $_POST['kategoria']);
+if(!empty($marka) && !empty($model) && !empty($rejestr) && !empty($data_przegladu) && !empty($ubezp) && !empty($data_ubezp) && !empty($kategoria))
 {
-	$sql = "INSERT INTO srodki_transportu ( marka, model,rodzaj, nr_rejestracyjny, nr_ubezpieczenia, data_ubezpieczenia, KATEGORIE_idKategorie, data_przegladu, stan_techniczny, dostępnosc) VALUES ('$marka', '$model', '$rodzaj', '$rejestr', '$ubezp', '$data_ubezp', '$kategoria','$data_przegladu', '1','1')";
+	$sql = "INSERT INTO srodki_transportu ( marka, model, nr_rejestracyjny, nr_ubezpieczenia, data_ubezpieczenia, KATEGORIE_idKategorie, data_przegladu, stan_techniczny, dostępnosc) VALUES ('$marka', '$model', '$rejestr', '$ubezp', '$data_ubezp', '$kategoria','$data_przegladu', '1','1')";
 
 	if(mysqli_query($polaczenie, $sql)){
 		echo "Records added successfully.";
@@ -63,10 +54,10 @@ if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !em
 <label for="model">Model:</label> 
 <input type="text" name="model" id="model"> 
 </p> 
-<p> 
-<label for="rodzaj">Rodzaj:</label> <span>Do jakiej kategorii prawa jazdy pojazd jest przeznaczony</span> 
-<input type="text" name="rodzaj" id="rodzaj"> 
-</p> 
+<!-- <p>  -->
+<!-- <label for="rodzaj">Rodzaj:</label> <span>Do jakiej kategorii prawa jazdy pojazd jest przeznaczony</span>  -->
+<!-- <input type="text" name="rodzaj" id="rodzaj">  -->
+<!-- </p>  -->
 <p> 
 <label for="rejestr">Numer rejestracyjny:</label> 
 <input type="text" name="rejestr" id="rejestr"> 
@@ -77,15 +68,23 @@ if(!empty($marka) && !empty($model) && !empty($rodzaj)&& !empty($rejestr) && !em
 </p> 
 <p> 
 <label for="data_ubezp">Data ubezpieczenia:</label> 
-<input type="text" name="data_ubezp" id="data_ubezp"> 
+<input type="datetime-local" name="data_ubezp" id="data_ubezp"> 
 </p> 
 <p> 
 <label for="data_przegladu">Data przeglądu:</label> 
-<input type="text" name="data_przegladu" id="data_przegladu"> 
+<input type="datetime-local" name="data_przegladu" id="data_przegladu"> 
 </p> 
 <p> 
 <label for="kategoria">Kategoria:</label> 
-<input type="text" name="kategoria" id="kategoria"> 
+<select name="kategoria" id="kategoria" required>
+<?php
+while ($wiersz=$zapListaKategoria->fetch_array()) {
+?>
+      <option value="<?php echo $wiersz[0]; ?>"> <?php echo $wiersz[3]; ?> </option>
+<?php
+}
+?>
+</select>
 </p> 
 <input type="submit" value="Dodaj pojazd"> 
 </form>

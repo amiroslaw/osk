@@ -28,7 +28,21 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 // czy to przypadkiem nie to samo co rodzaj?
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
 		while ($r = $zapytanie->fetch_array()) {
-			echo "<tr> <td>$r[0]</td> <td>$r[6]</td> <td>$r[4]</td> <td>$r[8]</td>  <td>$r[5]</td><td>$r[9]</td>  <td><a href='edytuj_pojazd.php?id=$r[0]'>Edytuj</a></td> </tr> ";
+			echo "<tr ";  
+if ($r[5]< "0" || $r[9]<"0") { echo 'style="color:red;"'; } 
+			echo "> <td>$r[0]</td> <td>$r[6]</td> <td>$r[4]</td> <td>$r[8]</td>"; 
+if ($r[5]<0) {
+	echo "<td>zepsuty</td>";
+}else {
+	echo "<td>sprawny</td>";
+}
+if ($r[9]<0) {
+	echo "<td>niedostępny</td>";
+}else {
+	echo "<td>dostępny</td>";
+}
+//  <td>$r[5]</td><td>$r[9]</td> 
+echo " <td><a href='edytuj_pojazd.php?id=$r[0]'>Edytuj</a></td> </tr> ";
 		} 
 		echo "</table>";
 		$zapytanie->free_result();

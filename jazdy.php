@@ -20,6 +20,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 FROM jazdy, instruktorzy, klienci, srodki_transportu
 WHERE instruktorzy.idINSTRUKTORZY=jazdy.idINSTRUKTORZY AND jazdy.KLIENCI_idKLIENT=klienci.idKLIENT AND jazdy.idPojazdy=srodki_transportu.idPojazdy
 ORDER BY termin_rozpoczecia");
+// zapytania do lis rozwijanych w formularzu
 $zapListaInstruktorow = @$polaczenie->query("SELECT * FROM instruktorzy");
 $zapListaKlientow = @$polaczenie->query("SELECT * FROM klienci");
 $zapListaPojazdow = @$polaczenie->query("SELECT * FROM srodki_transportu");
@@ -51,18 +52,6 @@ $zapListaPojazdow = @$polaczenie->query("SELECT * FROM srodki_transportu");
 @$instruktor = mysqli_real_escape_string($polaczenie, $_POST['instruktor']); 
 @$pojazd = mysqli_real_escape_string($polaczenie, $_POST['pojazd']); 
 @$klient = mysqli_real_escape_string($polaczenie, $_POST['klient']); 
-//sprawdzanie poprawności danych
-// if (isset($_POST['rodzaj']) )  
-// { 
-// 	$rodzaj = filter_var($_POST['rodzaj'], FILTER_VALIDATE_INT);
-// 	$kategoria = filter_var($_POST['kategoria'], FILTER_VALIDATE_INT);
-// 	if($rodzaj && $kategoria){
-// 		@$rodzaj = mysqli_real_escape_string($polaczenie, $_POST['rodzaj']);
-// 		@$kategoria = mysqli_real_escape_string($polaczenie, $_POST['kategoria']);
-// 	}else{
-// 		echo	"<span style='color:red; display:block; text-align:left;'> niepoprawna wartość pola</span> ";
-// 	}        
-// }
 
 if(!empty($rozpoczecie) && !empty($zakonczenie) && !empty($instruktor)&& !empty($pojazd) && !empty($klient) )
 // if(!empty($rozpoczecie) && !empty($instruktor)&& !empty($pojazd) && !empty($klient) )
@@ -77,7 +66,7 @@ if(!empty($rozpoczecie) && !empty($zakonczenie) && !empty($instruktor)&& !empty(
 		echo "ERROR: Could not able to execute $sql. " . mysqli_error($polaczenie);
 	}
 }else{
-echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
+// echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 }
 
 

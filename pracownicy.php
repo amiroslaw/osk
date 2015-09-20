@@ -21,7 +21,7 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 		echo '<table> <tr>	<th>Nr.</th> <th>Imię</th>  <th>Nazwisko</th>  <th>Email</th> </tr>';
 		// zapisujemy wynik zapytania do tablicy asocjacyjnej 
 		while ($r = $zapytanie->fetch_array()) {
-			echo "<tr> <td>$r[0]</td> <td>$r[1]</td> <td>$r[2]</td> <td>$r[4]</td> </tr> ";
+			echo "<tr> <td>$r[0]</td> <td>$r[1]</td> <td>$r[2]</td> <td>$r[4]</td>  <td><a href='delete.php?id=$r[0]'>x</a></td> </tr> ";
 		} 
 		echo "</table>";
 		$zapytanie->free_result();
@@ -65,46 +65,22 @@ if (isset($_POST['email'])) {
 
 		}}
 
-	// usuwanie rekordu z bazy danych 
-	@$id= $_POST['id']; 
-	if(!empty($id)){
-		$sqldel = "DELETE FROM uzytkownicy  WHERE id='$id'";
-
-		if(mysqli_query($polaczenie, $sqldel)){
-
-			echo "Records were deleted successfully.";
-			header('refresh: 1;');
-
-		} else{
-
-			echo "ERROR: Could not able to execute $sqldel. " . mysqli_error($polaczenie);
-
-		}
-	}
 	@	$polaczenie->close();
 	?>
 
 		<form action="<?php $_PHP_SELF ?>" method="post"> 
 		<p> 
 		<label for="firstName">Imię:</label> 
-		<input type="text" name="firstname" id="firstName"> 
+		<input type="text" name="firstname" id="firstName" required> 
 		</p> 
 		<p> 
 		<label for="lastName">Nazwisko:</label> 
-		<input type="text" name="lastname" id="lastName"> 
+		<input type="text" name="lastname" id="lastName" required> 
 		</p> 
 		<p> 
 		<label for="emailAddress">Adres Email:</label> 
-		<input type="text" name="email" id="emailAddress"> 
+		<input type="email" name="email" id="emailAddress" required> 
 		</p> 
 		<input type="submit" value="Dodaj pracownika"> 
 		</form>
 
-
-		<form action="<?php $_PHP_SELF ?>" method="post"> 
-		<p> 
-		<label for="id">Usuń rekord o id:</label> 
-		<input type="text" name="id" id="id"> 
-		</p> 
-		<input type="submit" value="Usuń pracownika"> 
-		</form>

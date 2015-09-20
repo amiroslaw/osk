@@ -18,6 +18,9 @@ $query1="delete from $nazwaTabeli where idINSTRUKTORZY='$id'";
 case 'wykladowcy':
 $query1="delete from $nazwaTabeli where idWykladowcy='$id'";
 	break;
+case 'pracownicy':
+$query1="delete from uzytkownicy where Id='$id'";
+	break;
 case 'pojazdy':
 $query1="delete from srodki_transportu where idPojazdy='$id'";
 	break;

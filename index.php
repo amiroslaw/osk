@@ -24,8 +24,8 @@
 echo <<<END
 	<form action="zaloguj.php" method="post">
 	
-		Login: <br /> <input type="text" name="login" /> <br />
-		Hasło: <br /> <input type="password" name="haslo" /> <br /><br />
+		Login: <br /> <input type="text" name="login" required/> <br />
+		Hasło: <br /> <input type="password" name="haslo" required/> <br /><br />
 		<input type="submit" value="Zaloguj się" />
 	
 	</form>
@@ -56,7 +56,7 @@ END;
 		<li><a href="?page=pojazdy">Pojazdy</a>
 					<ul>
 						<li><a href="?page=dodajPojazd">Dodaj pojazd</a></li>
-						<li><a href="?page=awaria">Zgłaszanie awarii</a></li>
+						<!-- <li><a href="?page=awaria">Zgłaszanie awarii</a></li> -->
 						<li><a href="?page=stanTechniczny">Stan techniczny</a></li>
 					</ul>
 				</li>
@@ -69,9 +69,9 @@ END;
 				</li>
 		<li><a href="#">Kadra</a>
 					<ul>
-		<li><a href="?page=pracownicy">Pracownicy</a></li>
 		<li><a href="?page=wykladowcy">Wykladowcy</a></li>
 		<li><a href="?page=instruktorzy">Instuktorzy</a></li>
+		<li><a href="?page=pracownicy">Pracownicy</a></li>
 					</ul>
 				</li>
 				<li><a href="#">O autorach</a></li>
