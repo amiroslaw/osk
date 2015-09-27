@@ -105,7 +105,7 @@ if(isset($_GET['id']))
 		{
 			echo	"<span style='color:red; display:block; text-align:left;'> pusty formularz</span> ";
 		} else{
-			$query3="UPDATE Grupy SET nazwa='$nazwa', idKategorie='$kategoria', idWykladowcy='$wykladowca'
+			$query3="UPDATE grupy SET nazwa='$nazwa', idKategorie='$kategoria', idWykladowcy='$wykladowca'
 				 WHERE idGrupa='$id'";
 			if(mysqli_query($polaczenie,$query3))
 			{ echo "update";
@@ -118,7 +118,7 @@ if(isset($_GET['id']))
 			}
 		}
 	}
-	$q="select * from Grupy where idGrupa='$id'";
+	$q="select * from grupy where idGrupa='$id'";
 	$zapytanie=mysqli_query($polaczenie, $q) or die(mysqli_error());
 	$query2= mysqli_fetch_array($zapytanie);
 ?>

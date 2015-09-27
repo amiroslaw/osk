@@ -98,11 +98,32 @@ if(isset($_GET['id']))
 	if(isset($_POST['submit']))
 	{
 // edycja rekordu 
-@$rozpoczecie = mysqli_real_escape_string($polaczenie, $_POST['rozpoczecie']); 
 @$zakonczenie = mysqli_real_escape_string($polaczenie, $_POST['zakonczenie']); 
 @$instruktor = mysqli_real_escape_string($polaczenie, $_POST['instruktor']); 
 @$klient = mysqli_real_escape_string($polaczenie, $_POST['klient']); 
 @$pojazd = mysqli_real_escape_string($polaczenie, $_POST['pojazd']); 
+// sprawdzenie czy nie nakladaja sie jazdy
+	if (isset($_POST['rozpoczecie'])) { 
+	$idPojazdu= $_POST['pojazd'];
+		@$noweRozpoczecie =  $_POST['rozpoczecie']; 
+		@$noweZakonczenie =  $_POST['zakonczenie']; 
+		$rezerwacja=1;
+		$zapTermin = @$polaczenie->query(" SELECT `termin_rozpoczecia`, `termin_zakonczenia` FROM `jazdy` WHERE `idPojazdy`=$idPojazdu");
+		$ileWierszy =$zapTermin->num_rows;
+		while($z=$zapTermin->fetch_array()){
+			if($noweZakonczenie<$z[0] || $noweRozpoczecie> $z[1]){
+				$rezerwacja++;
+			}
+		}
+		if($rezerwacja==$ileWierszy){
+			@$rozpoczecie = mysqli_real_escape_string($polaczenie, $_POST['rozpoczecie']); 
+//dodanie wyjezdzonych minut do tabeli klienci 
+		// @$polaczenie->query(" UPDATE klienci SET wyjezdzone_min= wyjezdzone_min+ $roznica_min  WHERE `idKLIENT`=$klient");
+		}
+		else{
+			echo	"<span style='color:red; display:block; text-align:left;'>Pojazd niedostępny, wybierz inny termin. </span> ";
+		}        
+	}
 
 		if(empty($rozpoczecie) || empty($zakonczenie)|| empty($instruktor)|| empty($klient) || empty($pojazd))
 		{

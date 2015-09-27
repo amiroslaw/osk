@@ -15,10 +15,10 @@ if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
 	}
 	else
 	{
-$zapytanie = @$polaczenie->query("SELECT Grupy.idGrupa,Grupy.nazwa, kategorie.kategoria, wykladowcy.imie, wykladowcy.nazwisko
- FROM Grupy, kategorie, wykladowcy
-WHERE Grupy.idKategorie=kategorie.idKategorie AND Grupy.idWykladowcy=wykladowcy.idWykladowcy
-ORDER BY Grupy.idGrupa");
+$zapytanie = @$polaczenie->query("SELECT grupy.idGrupa,grupy.nazwa, kategorie.kategoria, wykladowcy.imie, wykladowcy.nazwisko
+ FROM grupy, kategorie, wykladowcy
+WHERE grupy.idKategorie=kategorie.idKategorie AND grupy.idWykladowcy=wykladowcy.idWykladowcy
+ORDER BY grupy.idGrupa");
 		echo '<table> <tr>	
 <th>Nr.</th>
 <th>Nazwa grupy</th> 

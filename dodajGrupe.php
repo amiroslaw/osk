@@ -25,8 +25,8 @@ $zapListaWykladowca = @$polaczenie->query("SELECT * FROM wykladowcy");
 
 if(!empty($nazwa) && !empty($wykladowca) && !empty($kategoria))
 {
-	$sql = "INSERT INTO Grupy ( nazwa, idKategorie, idWykladowcy) VALUES ('$nazwa','$kategoria','$wykladowca')";
-	// $sql = "INSERT INTO Grupy ( idGrupa,nazwa, idKategorie, idWykladowcy) VALUES (NULL,'$nazwa', '$wykladowca',  '$kategoria')";
+	$sql = "INSERT INTO grupy ( nazwa, idKategorie, idWykladowcy) VALUES ('$nazwa','$kategoria','$wykladowca')";
+	// $sql = "INSERT INTO grupy ( idGrupa,nazwa, idKategorie, idWykladowcy) VALUES (NULL,'$nazwa', '$wykladowca',  '$kategoria')";
 	if(mysqli_query($polaczenie, $sql)){
 		echo "Records added successfully.";
 		header('refresh: 1;');
